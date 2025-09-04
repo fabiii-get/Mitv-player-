@@ -1,4 +1,5 @@
-body, html {
+/* Fondo negro y layout base */
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -6,34 +7,107 @@ body, html {
   background: #000;
 }
 
-#player-container {
+/* El iframe ocupa toda la pantalla */
+#player-frame {
   position: fixed;
-  top: 0; left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
+  border: 0;
 }
 
-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.controls {
+/* Barra superior de controles */
+.topbar {
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0; left: 0; right: 0;
   display: flex;
-  gap: 10px;
-  z-index: 1000;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+}
+.topbar button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  cursor: pointer;
 }
 
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
+/* Etiqueta con el nombre del canal */
+.badge {
+  position: fixed;
+  top: 56px; left: 12px;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .9rem;
+  z-index: 19;
+}
+
+/* Cajón con la lista de canales */
+.drawer {
+  position: fixed;
+  inset: auto 0 0 0;
+  background: rgba(10,10,14,.97);
+  border-top: 1px solid #222;
+  border-radius: 12px 12px 0 0;
+  transform: translateY(102%);
+  transition: transform .25s ease;
+  z-index: 30;
+}
+.drawer.open { transform: translateY(0); }
+.drawer .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  padding: 10px;
+}
+.drawer .item {
+  background: #0f1622;
+  border: 1px solid #223047;
+  color: #cfe3ff;
+  border-radius: 10px;
+  padding: 12px;
   cursor: pointer;
-  background: rgba(0,0,0,0.6);
-  color: white;
+}
+
+/* Overlay inicial para pedir interacción (autoplay + fullscreen) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.85);
+  color: #fff;
+  z-index: 40;
+}
+.overlay .card {
+  text-align: center;
+  max-width: 520px;
+  padding: 18px;
+  border: 1px solid #333;
+  border-radius: 14px;
+  background: rgba(20,20,28,.9);
+}
+.overlay button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #00c2a8;
+  color: #05201c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Accesibilidad al navegar con control remoto/teclado */
+button:focus {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
 }
