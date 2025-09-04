@@ -1,20 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TV Multi-Canal</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reproductor MiTV</title>
+  <link rel="stylesheet" href="estilo.css" />
+  <style>
+    /* Extras mínimos por si no carga el CSS */
+    #player-frame{position:fixed;inset:0;border:0;width:100%;height:100%}
+    .topbar{position:fixed;top:0;left:0;right:0;display:flex;gap:8px;align-items:center;justify-content:center;padding:8px;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:20}
+    .topbar button{padding:8px 12px;border:none;border-radius:8px;background:rgba(0,0,0,.6);color:#fff}
+    .badge{position:fixed;top:56px;left:12px;background:rgba(0,0,0,.55);color:#fff;padding:6px 10px;border-radius:999px;font-size:.9rem;z-index:19}
+    .drawer{position:fixed;inset:auto 0 0 0;background:rgba(10,10,14,.97);border-top:1px solid #222;border-radius:12px 12px 0 0;transform:translateY(102%);transition:.25s;z-index:30}
+    .drawer.open{transform:translateY(0)}
+    .drawer .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;padding:10px}
+    .drawer .item{background:#0f1622;border:1px solid #223047;color:#cfe3ff;border-radius:10px;padding:12px;cursor:pointer}
+    .overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.85);color:#fff;z-index:40}
+    .overlay .card{text-align:center;max-width:520px;padding:18px;border:1px solid #333;border-radius:14px;background:rgba(20,20,28,.9)}
+    .overlay button{margin-top:12px;padding:10px 16px;border:none;border-radius:10px;background:#00c2a8;color:#05201c;font-weight:700}
+  </style>
 </head>
 <body>
-  <div id="player-container">
-    <iframe id="player" src="https://zonahack.com.ar/tv" allowfullscreen></iframe>
+  <!-- Controles superiores -->
+  <div class="topbar" id="controls" hidden>
+    <button id="prevBtn" tabindex="0">⟨ Anterior</button>
+    <button id="reloadBtn" tabindex="0">Recargar</button>
+    <button id="nextBtn" tabindex="0">Siguiente ⟩</button>
+    <button id="fsBtn"    tabindex="0">⛶ Pantalla completa</button>
+    <button id="listBtn"  tabindex="0">Canales</button>
   </div>
 
-  <div class="controls">
-    <button id="prevBtn">⟨ Anterior</button>
-    <button id="nextBtn">Siguiente ⟩</button>
-    <button id="fsBtn">Pantalla Completa</button>
+  <div class="badge" id="badge" hidden>Canal: —</div>
+
+  <!-- Donde se cargan los canales -->
+  <iframe id="player-frame" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
+
+  <!-- Lista de canales -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="grid" id="channelGrid"></div>
+  </aside>
+
+  <!-- Overlay para iniciar con interacción del usuario (sonido + fullscreen) -->
+  <div class="overlay" id="startOverlay">
+    <div class="card">
+      <h2>Reproductor MiTV</h2>
+      <p>Presioná <b>OK/Enter</b> en el control o <b>tocá el botón</b> para iniciar con pantalla completa y sonido.</p>
+      <button id="startBtn">Iniciar reproducción</button>
+      <p style="opacity:.7;margin-top:10px;">Consejo: cambiá de canal con ← →, números 1-9 o deslizando.</p>
+    </div>
   </div>
 
   <script src="script.js"></script>
